@@ -18,12 +18,45 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        input, button {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to {{ title }}</h1>
-        <p>This is a simple Flask application ready for your knowledge graph integration!</p>
+        <p>This is a simple demo showing how a web API works in Python.</p>
+
+        <h2>Try the <code>POST /api/greet</code> Endpoint</h2>
+        <form id="greet-form">
+            <input type="text" id="name-input" placeholder="Enter your name" value="Alice" />
+            <button type="submit">Send POST Request</button>
+        </form>
+
+        <h3>API Response:</h3>
+        <pre id="response-box">Click "Send POST Request" to see the response...</pre>
     </div>
+
+    <script>
+        document.getElementById('greet-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name-input').value;
+            const response = await fetch('/api/greet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            const data = await response.json();
+            document.getElementById('response-box').textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
 </body>
-</html> 
+</html>
